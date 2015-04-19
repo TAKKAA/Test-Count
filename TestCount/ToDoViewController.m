@@ -46,7 +46,8 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return array.count;
+//    return array.count;
+    return  10;
     
 }
 
@@ -67,15 +68,25 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     
+    
+    UITouch *touch = [touches anyObject];
+
+    if (touch.view.tag == 2) {
+        
         NSInteger row = [array count];
-    
+        
         NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-    
+        
         [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
-    
+        
         [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
+        
+        NSLog(@"%long",touch.view.tag);
+        
         NSLog(@"%long",row);
+
+    }
+
     
 }
 
