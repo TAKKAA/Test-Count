@@ -28,7 +28,11 @@
     
     UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithTitle:@"完了" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     
-    self.navigationItem.rightBarButtonItem = done;
+    self.navigationItem.leftBarButtonItem = done;
+    
+    UIBarButtonItem *plus = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(plus)];
+    
+    self.navigationItem.rightBarButtonItem = plus;
     
 }
 
@@ -66,27 +70,18 @@
 //    
 //}
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+-(void)plus{
     
-    
-    UITouch *touch = [touches anyObject];
-
-    if (touch.view.tag == 2) {
-        
         NSInteger row = [array count];
-        
+       [array insertObject:@"a" atIndex:row];
+
         NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
         
         [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
         
         [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        
-        NSLog(@"%long",touch.view.tag);
-        
+    
         NSLog(@"%long",row);
-
-    }
-
     
 }
 

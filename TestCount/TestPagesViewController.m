@@ -72,6 +72,7 @@
         NSString *subject = [[alertView textFieldAtIndex:0]text];
         
         NSInteger row = [array count];
+        
         [array insertObject:subject atIndex:row];
         
         NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
