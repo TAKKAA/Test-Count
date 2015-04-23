@@ -76,7 +76,7 @@
        [array insertObject:@"a" atIndex:row];
 
         NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-        
+    
         [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
         
         [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
