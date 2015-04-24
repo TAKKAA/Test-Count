@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ToDoViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>{
+@interface ToDoViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>{
     
     IBOutlet UITableView *table;
     
-    UITextView *text;
+    UITextField *text;
     
     NSMutableArray *array;
     

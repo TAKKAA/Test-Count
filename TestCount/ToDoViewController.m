@@ -26,9 +26,10 @@
     
     text.delegate = self;
     
-    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithTitle:@"完了" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     
-    self.navigationItem.leftBarButtonItem = done;
+//    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithTitle:@"完了" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
+//    
+//    self.navigationItem.leftBarButtonItem = done;
     
     UIBarButtonItem *plus = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(plus)];
     
@@ -36,11 +37,34 @@
     
 }
 
--(void)done{
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [text resignFirstResponder];
     
+    return YES;
+    
 }
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    
+//    if (!textField.isFirstResponder) {
+//        
+//        [textField becomeFirstResponder];
+//        
+//        
+//        
+//    }
+//    
+//    return YES;
+    [textField endEditing:YES];
+    
+    return YES;
+
+}
+
+
+
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -50,8 +74,8 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-//    return array.count;
-    return  10;
+    return array.count;
+//    return  10;
     
 }
 
@@ -72,44 +96,56 @@
 
 -(void)plus{
     
-        NSInteger row = [array count];
-       [array insertObject:@"a" atIndex:row];
-
-        NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-    
-        [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
+    if (!array) {
         
-        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        array = [[NSMutableArray alloc] init];
+        
+    }
+
+        NSInteger row = [array count];
+       [array insertObject:@"a" atIndex:0];
     
-        NSLog(@"%long",row);
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    [table insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+
+//        NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
+//    
+//        [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
+//        
+//        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    
+//        NSLog(@"%long",row);
     
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    
     NSString *cellIdefender = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdefender];
-
-    CGRect frame = CGRectMake(30, 10, cell.contentView.bounds.size.width -30, 30);
-
-    text = [[UITextView alloc]initWithFrame:frame];
-    text.font = [UIFont systemFontOfSize:18];
-    text.delegate = self;
-//    text.tag = 1;
-    [cell.contentView addSubview:text];
-    
-
     
     if(!cell){
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdefender];
         
-//        [cell.contentView addSubview:text];
+        //        [cell.contentView addSubview:text];
         text.delegate =self;
         
     }
+
+
+    CGRect frame = CGRectMake(10, 10, cell.contentView.bounds.size.width -30, 30);
+    text = [[UITextField alloc]initWithFrame:frame];
     
+    text.font = [UIFont systemFontOfSize:18];
+    text.delegate = self;
+    text.borderStyle = UITextBorderStyleNone;
+    text.placeholder = @"今日やることを入力";
+    text.clearButtonMode = UITextFieldViewModeAlways;
+    text.returnKeyType = UIReturnKeyDone;
+    [cell.contentView addSubview:text];
     
     return cell;
 }
