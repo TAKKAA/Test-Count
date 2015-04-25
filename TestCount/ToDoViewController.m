@@ -48,11 +48,11 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     
+//    [text resignFirstResponder];
+//    
 //    if (!textField.isFirstResponder) {
 //        
 //        [textField becomeFirstResponder];
-//        
-//        
 //        
 //    }
 //    
@@ -152,7 +152,14 @@
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        [array removeObjectAtIndex:indexPath.row];
+        
+        [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
+        
+    }
     
 }
 
