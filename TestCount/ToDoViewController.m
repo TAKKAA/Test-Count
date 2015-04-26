@@ -64,7 +64,41 @@
 }
 
 
+//- (BOOL)textfield:(UITextView *)textf shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//    
+//    int maxInputLength = 3;    //文字制限数
+//    
+//    //入力済のテキストを取得
+//    NSMutableString *str = [textView.text mutableCopy];
+//    
+//    //入力済のテキストと入力が行われたテキストを結合
+//    [str replaceCharactersInRange:range withString:text];
+//    
+//    if([str length] > maxInputLength)
+//    {
+//        return NO;  //入力を禁止する
+//    }
+//    return YES;
+//}
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+        int maxInputLength = 14;    //文字制限数
+    
+        //入力済のテキストを取得
+        NSMutableString *str = [text.text mutableCopy];
+    
+        //入力済のテキストと入力が行われたテキストを結合
+        [str replaceCharactersInRange:range withString:string];
+    
+        if([str length] > maxInputLength)
+        {
+            return NO;  //入力を禁止する
+        }
+    
+        return YES;
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -107,6 +141,7 @@
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [table insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
 
 
 //        NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
@@ -136,29 +171,30 @@
     }
 
 
-    CGRect frame = CGRectMake(10, 10, cell.contentView.bounds.size.width -30, 30);
+    CGRect frame = CGRectMake(20, 10, cell.contentView.bounds.size.width -30, 30);
     text = [[UITextField alloc]initWithFrame:frame];
     
     text.font = [UIFont systemFontOfSize:18];
     text.delegate = self;
     text.borderStyle = UITextBorderStyleNone;
     text.placeholder = @"今日やることを入力";
-    text.clearButtonMode = UITextFieldViewModeAlways;
+    text.clearButtonMode = UITextFieldViewModeWhileEditing;
     text.returnKeyType = UIReturnKeyDone;
     [cell.contentView addSubview:text];
     
     return cell;
+    
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+    if (editingStyle == UITableViewCellEditingStyleDelete){
         
         [array removeObjectAtIndex:indexPath.row];
         
         [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    
         
+    
     }
     
 }
