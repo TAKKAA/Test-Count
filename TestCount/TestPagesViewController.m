@@ -137,6 +137,9 @@
         
         [array removeObjectAtIndex:indexPath.row]; // 削除ボタンが押された行のデータを配列から削除
         [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        
+        
 
     }
     

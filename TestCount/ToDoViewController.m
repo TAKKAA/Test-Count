@@ -7,6 +7,7 @@
 //
 
 #import "ToDoViewController.h"
+#import "CustomTableViewCell.h"
 
 @interface ToDoViewController ()
 
@@ -24,12 +25,13 @@
     
     array = [[NSMutableArray alloc]init];
     
-    text.delegate = self;
+    UINib *nib = [UINib nibWithNibName:@"Empty" bundle:nil];
+    [table registerNib:nib forCellReuseIdentifier:@"Cell"];
     
     
-//    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithTitle:@"完了" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
-//    
-//    self.navigationItem.leftBarButtonItem = done;
+    //    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithTitle:@"完了" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
+    //
+    //    self.navigationItem.leftBarButtonItem = done;
     
     UIBarButtonItem *plus = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(plus)];
     
@@ -38,94 +40,32 @@
 }
 
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    [text resignFirstResponder];
-    
-    return YES;
-    
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    
-//    [text resignFirstResponder];
-//    
-//    if (!textField.isFirstResponder) {
-//        
-//        [textField becomeFirstResponder];
-//        
-//    }
-//    
-//    return YES;
-    [textField endEditing:YES];
-    
-    return YES;
-
-}
-
-
-//- (BOOL)textfield:(UITextView *)textf shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-//{
-//    
-//    int maxInputLength = 3;    //文字制限数
-//    
-//    //入力済のテキストを取得
-//    NSMutableString *str = [textView.text mutableCopy];
-//    
-//    //入力済のテキストと入力が行われたテキストを結合
-//    [str replaceCharactersInRange:range withString:text];
-//    
-//    if([str length] > maxInputLength)
-//    {
-//        return NO;  //入力を禁止する
-//    }
-//    return YES;
-//}
-
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
-        int maxInputLength = 14;    //文字制限数
-    
-        //入力済のテキストを取得
-        NSMutableString *str = [text.text mutableCopy];
-    
-        //入力済のテキストと入力が行われたテキストを結合
-        [str replaceCharactersInRange:range withString:string];
-    
-        if([str length] > maxInputLength)
-        {
-            return NO;  //入力を禁止する
-        }
-    
-        return YES;
-}
-
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
     return  1;
-
+    
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return array.count;
-//    return  10;
+    //    return  10;
     
 }
 
 //-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
 //
 //    NSInteger row = [array count];
-//    
+//
 //    NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-//    
+//
 //    [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
-//    
+//
 //    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    
+//
 //    NSLog(@"%long",row);
 //
-//    
+//
 //}
 
 -(void)plus{
@@ -135,22 +75,17 @@
         array = [[NSMutableArray alloc] init];
         
     }
-
-        NSInteger row = [array count];
-       [array insertObject:@"a" atIndex:0];
+    
+    // TODO: 現在操作中のセルを取得
+    CustomTableViewCell *customCell = [[CustomTableViewCell alloc] init];
+    
+    NSInteger row = [array count];
+    [array insertObject:customCell.todoTextField.text atIndex:0];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [table insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     
-
-
-//        NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-//    
-//        [table insertRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
-//        
-//        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    
-//        NSLog(@"%long",row);
+    [table reloadData];
     
 }
 
@@ -159,28 +94,17 @@
     
     
     NSString *cellIdefender = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdefender];
+    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdefender];
     
     if(!cell){
         
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdefender];
+        cell = [[CustomTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdefender];
         
-        //        [cell.contentView addSubview:text];
-        text.delegate =self;
         
     }
-
-
-    CGRect frame = CGRectMake(20, 10, cell.contentView.bounds.size.width -30, 30);
-    text = [[UITextField alloc]initWithFrame:frame];
     
-    text.font = [UIFont systemFontOfSize:18];
-    text.delegate = self;
-    text.borderStyle = UITextBorderStyleNone;
-    text.placeholder = @"今日やることを入力";
-    text.clearButtonMode = UITextFieldViewModeWhileEditing;
-    text.returnKeyType = UIReturnKeyDone;
-    [cell.contentView addSubview:text];
+    cell.todoTextField.text = array[indexPath.row];
+    
     
     return cell;
     
@@ -193,8 +117,6 @@
         [array removeObjectAtIndex:indexPath.row];
         
         [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
-    
     }
     
 }
@@ -206,13 +128,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
