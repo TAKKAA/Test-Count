@@ -20,6 +20,7 @@
 		1E0C82471ABDCB7F009418AA /* WriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E0C82461ABDCB7F009418AA /* WriteViewController.m */; };
 		1E527C3C1B04B2F90071E1BD /* Empty.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E527C3B1B04B2F90071E1BD /* Empty.xib */; };
 		1E527C3F1B04B3F40071E1BD /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E527C3E1B04B3F40071E1BD /* CustomTableViewCell.m */; };
+		1EDA6E071B173668006C8344 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EDA6E061B173668006C8344 /* DataManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		1E527C3B1B04B2F90071E1BD /* Empty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Empty.xib; sourceTree = "<group>"; };
 		1E527C3D1B04B3F40071E1BD /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
 		1E527C3E1B04B3F40071E1BD /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
+		1EDA6E051B173668006C8344 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		1EDA6E061B173668006C8344 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +109,8 @@
 				1E0C82391ABC1F17009418AA /* CountDownViewController.m */,
 				1E0C823B1ABC4F1A009418AA /* ToDoViewController.h */,
 				1E0C823C1ABC4F1A009418AA /* ToDoViewController.m */,
+				1EDA6E051B173668006C8344 /* DataManager.h */,
+				1EDA6E061B173668006C8344 /* DataManager.m */,
 				1E0C823E1ABD96DA009418AA /* TestPagesViewController.h */,
 				1E0C823F1ABD96DA009418AA /* TestPagesViewController.m */,
 				1E0C82451ABDCB7F009418AA /* WriteViewController.h */,
@@ -255,6 +260,7 @@
 				1E01557F1ABABDA2000A4B24 /* AppDelegate.m in Sources */,
 				1E0C82471ABDCB7F009418AA /* WriteViewController.m in Sources */,
 				1E527C3F1B04B3F40071E1BD /* CustomTableViewCell.m in Sources */,
+				1EDA6E071B173668006C8344 /* DataManager.m in Sources */,
 				1E01557C1ABABDA2000A4B24 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

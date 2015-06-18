@@ -11,9 +11,13 @@
 @interface ToDoViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>{
     
     IBOutlet UITableView *table;
+    
+    NSMutableArray *sellArray;
         
-    NSMutableArray *array;
+//    NSMutableArray *array;
     
 }
+
+@property(nonatomic, strong)NSMutableArray *array;
 
 @end

@@ -11,7 +11,6 @@
 @interface CustomTableViewCell : UITableViewCell<UITextFieldDelegate>{
     
     
-    
 }
 
 @property(nonatomic, weak)IBOutlet UITextField *todoTextField;

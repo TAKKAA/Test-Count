@@ -7,8 +7,31 @@
 //
 
 #import "CustomTableViewCell.h"
+#import "DataManager.h"
+#import "ToDoViewController.h"
 
 @implementation CustomTableViewCell
+
+@synthesize todoTextField;
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ( !(self = [super initWithCoder:aDecoder]) ) return nil;
+    self.todoTextField.delegate =self;
+    self.todoTextField.placeholder = @"今日やることを入力";
+    self.todoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.todoTextField.returnKeyType = UIReturnKeyDone;
+    
+//    DataManager *dataManager = [[DataManager alloc]init];
+//    ToDoViewController *todoView = [[ToDoViewController alloc]init];
+//    dataManager.textArray = [[NSMutableArray alloc]init];
+//    todoView.array = [[NSMutableArray alloc]init];
+//    
+//    
+//    self.todoTextField.text = [dataManager.textArray objectAtIndex:todoView.array];
+    
+    return self;
+}
+
 
 - (void)awakeFromNib {
     // Initialization code
@@ -17,6 +40,18 @@
     self.todoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.todoTextField.returnKeyType = UIReturnKeyDone;
     
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.todoTextField.delegate =self;
+        self.todoTextField.placeholder = @"今日やることを入力";
+        self.todoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.todoTextField.returnKeyType = UIReturnKeyDone;
+    }
+    return self;
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
@@ -41,6 +76,25 @@
     
     [self.todoTextField resignFirstResponder];
     
+    DataManager *dataManager = [[DataManager alloc] init];
+    dataManager.textArray = [[NSMutableArray alloc]init];
+    
+    NSInteger row = [dataManager.textArray count];
+    
+    [dataManager.textArray insertObject:self.todoTextField.text atIndex:row];
+    
+    NSLog(@"＝＝＝＝＝＝＝ %@",dataManager.textArray);
+    
+//////////////////////////////////////////////////////////////////////////
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+       
+    [defaults setObject:dataManager.textArray forKey:@"text"];
+    
+    [defaults synchronize];
+    
+//////////////////////////////////////////////////////////////////////////
+    
     return YES;
     
 }
@@ -61,6 +115,12 @@
     return YES;
     
 }
+
+//- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+////    textField.text
+//    
+//    return YES;
+//}
 
 
 

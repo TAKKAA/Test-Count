@@ -17,7 +17,6 @@ NSInteger titleRow;
     
 //    IBOutlet UILabel *label;
     
-    
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "ToDoViewController.h"
 #import "CustomTableViewCell.h"
+#import "DataManager.h"
 
 @interface ToDoViewController ()
 
@@ -19,18 +20,35 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
     table.delegate = self;
     table.dataSource = self;
     table.allowsSelection = NO;
     
-    array = [[NSMutableArray alloc]init];
+    if (!self.array) {
+        self.array = [[NSMutableArray alloc] init];
+    }
+    
+////////////////////////////////////////////////////////////////////
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSLog(@"******%@", [defaults arrayForKey:@"array"]);
+    
+    NSLog(@"[----]%@",[defaults arrayForKey:@"text"]);
+    
+    if ([defaults arrayForKey:@"array"]) {
+        self.array = [[defaults arrayForKey:@"array"] mutableCopy];
+    }
+    
+//////////////////////////////////////////////////////////////////////
     
     UINib *nib = [UINib nibWithNibName:@"Empty" bundle:nil];
     [table registerNib:nib forCellReuseIdentifier:@"Cell"];
     
     
     //    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithTitle:@"完了" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
-    //
+    
     //    self.navigationItem.leftBarButtonItem = done;
     
     UIBarButtonItem *plus = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(plus)];
@@ -48,8 +66,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return array.count;
-    //    return  10;
+    return self.array.count;
     
 }
 
@@ -70,28 +87,44 @@
 
 -(void)plus{
     
-    if (!array) {
-        
-        array = [[NSMutableArray alloc] init];
-        
-    }
     
-    // TODO: 現在操作中のセルを取得
-    CustomTableViewCell *customCell = [[CustomTableViewCell alloc] init];
+    NSInteger row = [self.array count];
     
-    NSInteger row = [array count];
-    [array insertObject:customCell.todoTextField.text atIndex:0];
+    [self.array insertObject:@"" atIndex:row];
+
+/////////////////////////////////////////////////////////////////////
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    [table insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    DataManager *data = [DataManager new];
     
-    [table reloadData];
+    [data.textArray addObject:@""];
+    
+    NSLog(data.textArray,@"%@");
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:self.array forKey:@"array"];
+    
+    [defaults setValue:data.textArray forKey:@"text"];
+    
+    [defaults synchronize];
+
+///////////////////////////////////////////////////////////////////
+
+    NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
+    
+    NSLog(@"self.array ========= %@", self.array);
+
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [table insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+ 
+//    [table reloadData];
+
+    NSLog(@"%long",row);
     
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     
     NSString *cellIdefender = @"Cell";
     CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdefender];
@@ -100,11 +133,23 @@
         
         cell = [[CustomTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdefender];
         
-        
     }
     
-    cell.todoTextField.text = array[indexPath.row];
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
+    DataManager *dataManager = [[DataManager alloc]init];
+
+    if ([defaults arrayForKey:@"text"]) {
+        
+        dataManager.textArray = [[defaults arrayForKey:@"text"] mutableCopy];
+        
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    
+    cell.todoTextField.text = dataManager.textArray[indexPath.row];
     
     return cell;
     
@@ -113,8 +158,13 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (editingStyle == UITableViewCellEditingStyleDelete){
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        [array removeObjectAtIndex:indexPath.row];
+        [defaults removeObjectForKey:@"array"];
+        [defaults removeObjectForKey:@"text"];
+        
+        [self.array removeObjectAtIndex:indexPath.row];
         
         [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -125,6 +175,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
 }
 
 /*
