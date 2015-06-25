@@ -25,21 +25,25 @@
     table.dataSource = self;
     table.allowsSelection = NO;
     
-    if (!self.array) {
-        self.array = [[NSMutableArray alloc] init];
-    }
+//    if (!self.array) {
+//        self.array = [[NSMutableArray alloc] init];
+//    }
     
 ////////////////////////////////////////////////////////////////////
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    NSLog(@"******%@", [defaults arrayForKey:@"array"]);
+//    NSLog(@"******%@", [defaults arrayForKey:@"array"]);
     
     NSLog(@"[----]%@",[defaults arrayForKey:@"text"]);
     
-    if ([defaults arrayForKey:@"array"]) {
-        self.array = [[defaults arrayForKey:@"array"] mutableCopy];
-    }
+    DataManager *data = [DataManager new];
+    
+    data.textArray = [[defaults arrayForKey:@"text"] mutableCopy];
+    
+//    if ([defaults arrayForKey:@"array"]) {
+//        self.array = [[defaults arrayForKey:@"array"] mutableCopy];
+//    }
     
 //////////////////////////////////////////////////////////////////////
     
@@ -66,7 +70,11 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.array.count;
+//    return self.array.count;
+    
+    DataManager *data = [DataManager new];
+    
+    return data.textArray.count;
     
 }
 
@@ -88,36 +96,44 @@
 -(void)plus{
     
     
-    NSInteger row = [self.array count];
-    
-    [self.array insertObject:@"" atIndex:row];
+//    NSInteger row = [self.array count];
+//
+//    [self.array insertObject:@"" atIndex:row];
 
 /////////////////////////////////////////////////////////////////////
     
     DataManager *data = [DataManager new];
     
-    [data.textArray addObject:@""];
+    if([data.textArray count] == 0){
+        
+        data.textArray = [NSMutableArray new];
+        
+         [data.textArray addObject:@""];
+        
+    }
     
-    NSLog(data.textArray,@"%@");
+//    NSLog(data.textArray,@"%@");
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    [defaults setObject:self.array forKey:@"array"];
+//    [defaults setObject:self.array forKey:@"array"];
     
     [defaults setValue:data.textArray forKey:@"text"];
     
     [defaults synchronize];
 
 ///////////////////////////////////////////////////////////////////
+    
+    NSInteger row = [data.textArray count];
 
     NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
     
-    NSLog(@"self.array ========= %@", self.array);
+//    NSLog(@"self.array ========= %@", self.array);
 
 //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [table insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
  
-//    [table reloadData];
+    [table reloadData];
 
     NSLog(@"%long",row);
     
@@ -161,10 +177,12 @@
 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        [defaults removeObjectForKey:@"array"];
+//        [defaults removeObjectForKey:@"array"];
+        
+    
         [defaults removeObjectForKey:@"text"];
         
-        [self.array removeObjectAtIndex:indexPath.row];
+//        [self.array removeObjectAtIndex:indexPath.row];
         
         [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }

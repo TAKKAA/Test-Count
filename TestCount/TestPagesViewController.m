@@ -112,6 +112,7 @@
     cell.textLabel.text = [array objectAtIndex:indexPath.row];
     
        return cell;
+    
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -138,9 +139,6 @@
         [array removeObjectAtIndex:indexPath.row]; // 削除ボタンが押された行のデータを配列から削除
         [table deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
-        
-        
-
     }
     
 }
